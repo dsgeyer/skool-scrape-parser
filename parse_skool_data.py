@@ -1,7 +1,9 @@
-// python3 parse_skool_data.py
+# python3 parse_skool_data.py <input_file.json>
 
 import json
 import html
+import argparse # Added for command-line arguments
+import os # Added to help with output filename
 
 def format_content_to_html(text_content):
     """Escapes HTML special characters in text and replaces newlines with <br> tags."""
@@ -53,8 +55,17 @@ def process_comment_html(comment_data, level=0):
 
 def main():
     """Main function to parse JSON data and generate HTML."""
-    input_filename = 'dataset_skool-posts-with-comments-scraper_2025-05-21_17-55-28-456.json'
-    output_filename = 'skool_posts_formatted.html'
+    # --- Start of changes for command-line arguments ---
+    parser = argparse.ArgumentParser(description="Parse Skool JSON data and generate an HTML report.")
+    parser.add_argument("input_filename", help="Path to the input JSON file.")
+    args = parser.parse_args()
+
+    input_filename = args.input_filename
+    # Generate output filename based on input filename
+    base_name, _ = os.path.splitext(input_filename)
+    output_filename = f"{base_name}_formatted.html"
+    # --- End of changes for command-line arguments ---
+
     posts_data = []
 
     try:
